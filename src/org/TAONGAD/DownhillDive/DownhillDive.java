@@ -15,6 +15,7 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.opengl.GLUtils;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
@@ -66,8 +67,6 @@ public class DownhillDive extends Activity {
 		super.onCreate(savedInstanceState);
 
 		m_instance = this;
-		m_width = 100;
-		m_height = 50;
 		m_isLoading = true;
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -75,21 +74,22 @@ public class DownhillDive extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-		//init();
+		init();
 
 		//RenderView renderView = new RenderView(getApplicationContext());
 		RenderView renderView = new RenderView(getApplicationContext());
-		GameRenderer renderer = new GameRenderer();
+		//GameRenderer renderer = new GameRenderer();
 		setContentView(renderView);
 	}
 
 	public void init() {
-		TextureManager.prepare();
+		//TextureManager.prepare();
 //		TextureAtlas atlas = new TextureAtlas(1024, 1024);
 
-		int w = 320;
-		int h = 200;
-		m_backBuffer = ByteBuffer.allocateDirect(w * h);
+		Display display = getWindowManager().getDefaultDisplay(); 
+		m_width = display.getWidth();
+		m_height = display.getHeight();
+		//m_backBuffer = ByteBuffer.allocateDirect(w * h);
 		
 //		m_ground = new Texture(m_backBuffer, w, h, false);
 //		atlas.insert(m_ground);
@@ -140,6 +140,12 @@ public class DownhillDive extends Activity {
 //		GLUtils.texImage2D()
 //		drawGround(gl, t, tex, y1, z1, y2, z2, x, xmul, ymul, texoff)
 	}
+	
+	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
+			float z1, int y2, float z2, float x) {
+		float zpos = 1.0f / z2;
+		z1 = 1.0f / z1;
+	}
 
 	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
 			float z1, int y2, float z2, float x, float xmul, float ymul,
@@ -184,6 +190,14 @@ public class DownhillDive extends Activity {
 				// (m_width >> 1) + (m_width >> 1)*(centx-1.0f)*zpos, (topy) >>
 				// 4,
 				// (m_width >> 1) * (2.0f)*zpos, (BottomY >> 4) - (topy >> 4));
+				
+				Paint mLinePaint = new Paint();
+				mLinePaint.setColor(0xFFFFFFFF);
+				mLinePaint.setStrokeWidth(1);
+				mLinePaint.setStyle(Style.STROKE);
+				
+				canvas.drawLine((m_width >> 1) + ((m_width >> 1) * (centx-1.0f) * zpos), (topy) >> 4,
+				(m_width >> 1) * (2.0f)*zpos, (BottomY >> 4) - (topy >> 4), mLinePaint);
 				BottomY = topy;
 			}
 

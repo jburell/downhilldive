@@ -75,9 +75,13 @@ public class RenderView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
+//		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
+//				DownhillDive.getInstance().getHeight() >> 1, 20,
+//				DownhillDive.getInstance().getHeight(), 1, 0, 0, 0, 0);
+		
 		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
 				DownhillDive.getInstance().getHeight() >> 1, 20,
-				DownhillDive.getInstance().getHeight(), 1, 0, 0, 0, 0);
+				DownhillDive.getInstance().getHeight(), 1, 0);
 	}
 
 	@Override
@@ -149,29 +153,5 @@ public class RenderView extends View {
 
 			return false;
 		}
-	}
-
-	private Bitmap getResBitmap(int bmpResId) {
-		Options opts = new Options();
-		opts.inDither = false;
-
-		Resources res = getResources();
-		Bitmap bmp = BitmapFactory.decodeResource(res, bmpResId, opts);
-
-		if (bmp == null && isInEditMode()) {
-			// BitmapFactory.decodeResource doesn't work from the rendering
-			// library in Eclipse's Graphical Layout Editor. Use this workaround
-			// instead.
-
-			Drawable d = res.getDrawable(bmpResId);
-			int w = d.getIntrinsicWidth();
-			int h = d.getIntrinsicHeight();
-			bmp = Bitmap.createBitmap(w, h, Config.ARGB_8888);
-			Canvas c = new Canvas(bmp);
-			d.setBounds(0, 0, w - 1, h - 1);
-			d.draw(c);
-		}
-
-		return bmp;
 	}
 }
