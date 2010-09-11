@@ -22,6 +22,7 @@ public class GameLoop implements Runnable {
 	float m_bgFrame = 0;
 	
 	Bitmap m_groundAnim[];
+	Bitmap m_horizon;
 	
 	public GameLoop() {
 		m_groundAnim = new Bitmap[3];
@@ -29,6 +30,7 @@ public class GameLoop implements Runnable {
 			m_groundAnim[0] = BitmapFactory.decodeStream(DownhillDive.getInstance().getAssets().open("ski_lvl_frame0.png"));
 			m_groundAnim[1] = BitmapFactory.decodeStream(DownhillDive.getInstance().getAssets().open("ski_lvl_frame1.png"));
 			m_groundAnim[2] = BitmapFactory.decodeStream(DownhillDive.getInstance().getAssets().open("ski_lvl_frame2.png"));
+			m_horizon = BitmapFactory.decodeStream(DownhillDive.getInstance().getAssets().open("horizon.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -133,6 +135,7 @@ public class GameLoop implements Runnable {
 		
 		canvas.drawColor(Color.BLACK);
 		
+		canvas.drawBitmap(m_horizon, new Rect(0, 0, 480, 160), new Rect(0, 0, DownhillDive.getInstance().getWidth(), DownhillDive.getInstance().getHeight() >> 1), new Paint());
 		canvas.drawBitmap(m_groundAnim[(int) (m_bgFrame % 3)], new Rect(0, 0, 480, 160), new Rect(0, DownhillDive.getInstance().getHeight() >> 1, DownhillDive.getInstance().getWidth(), DownhillDive.getInstance().getHeight()), new Paint());
 		m_bgFrame += 0.6;
 //		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
