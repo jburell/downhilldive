@@ -26,6 +26,9 @@ import android.view.WindowManager;
 
 public class DownhillDive extends Activity {
 	static DownhillDive m_instance;
+	
+	GameLoop m_loop;
+	RenderView m_renderView;
 
 	static public DownhillDive getInstance() {
 		return m_instance;
@@ -59,10 +62,10 @@ public class DownhillDive extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+		m_renderView = new RenderView(getApplicationContext());
+		
 		init();
-
-		RenderView renderView = new RenderView(getApplicationContext());
-		setContentView(renderView);
+		setContentView(m_renderView);
 	}
 
 	public void init() {
@@ -71,6 +74,9 @@ public class DownhillDive extends Activity {
 		m_height = display.getHeight();
 		
 		m_avatar = new Avatar(this, (SensorManager)getSystemService(Context.SENSOR_SERVICE));
+		
+		m_loop = new GameLoop();
+		m_loop.start(m_renderView.getHolder());
 	}
 	
 	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
