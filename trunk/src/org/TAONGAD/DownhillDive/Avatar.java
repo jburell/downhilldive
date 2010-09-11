@@ -23,7 +23,7 @@ public class Avatar {
 	}
 	
 	public void Update() {
-		Log.d("Avatar", "hej");
+		
 		if (Accelerometer.getX() > 0.5f) {
 			m_leanCurrent = Leaning.ALOT;
 		}

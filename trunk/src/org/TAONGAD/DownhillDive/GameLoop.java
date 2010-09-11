@@ -5,10 +5,12 @@ import java.io.IOException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.widget.SlidingDrawer;
 
 public class GameLoop implements Runnable {
 	SurfaceHolder m_surfHolder;
@@ -67,16 +69,32 @@ public class GameLoop implements Runnable {
 	}
 
 	public void run() {
+		float tmp_target = 1000.0f / 30.0f; // 30FPS
+		long tmp_last = System.currentTimeMillis();
+		
 		while (true) {
-			Canvas canvas = m_surfHolder.lockCanvas();
-			if (canvas != null) {
+			long tmp_now = System.currentTimeMillis();
+			if (tmp_target < tmp_now - tmp_last) {
+				tmp_last = tmp_now;
+				
+				Canvas canvas = m_surfHolder.lockCanvas();
+				if (canvas != null) {
+					try {
+						updateInput();
+	
+						// updateSound();
+						updateGraphics(canvas);
+					} finally {
+						m_surfHolder.unlockCanvasAndPost(canvas);
+					}
+				}
+			}
+			else {
 				try {
-					updateInput();
-
-					// updateSound();
-					updateGraphics(canvas);
-				} finally {
-					m_surfHolder.unlockCanvasAndPost(canvas);
+					Thread.sleep(tmp_now - tmp_last);
+				} catch (InterruptedException e) {
+					Log.e("Crash!!!!!!!!!!!!!!1", "Failed to sleep");
+					e.printStackTrace();
 				}
 			}
 		}
@@ -96,13 +114,14 @@ public class GameLoop implements Runnable {
 		// DownhillDive.getInstance().drawGround(canvas, m_groundTex,
 		// DownhillDive.getInstance().getHeight() >> 1, 20,
 		// DownhillDive.getInstance().getHeight(), 1, 0, 0, 0, 0);
-
+		
+		canvas.drawColor(Color.BLACK);
 		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
 				DownhillDive.getInstance().getHeight() >> 1, 20,
 				DownhillDive.getInstance().getHeight(), 1, 0f);
 
 		canvas.drawBitmap(m_bmpAv[DownhillDive.getInstance().getAvatar()
-				.getLeanCurrent().ordinal()], new Rect(0, 0, 128, 128),
-				new Rect(10, 10, 128, 128), new Paint());
+				.getLeanCurrent().ordinal()], new Rect(0, 0, 64, 64),
+				new Rect(10, 10, 256, 256), new Paint());
 	}
 }
