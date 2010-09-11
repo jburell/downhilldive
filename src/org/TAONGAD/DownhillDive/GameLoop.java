@@ -116,9 +116,9 @@ public class GameLoop implements Runnable {
 		// DownhillDive.getInstance().getHeight(), 1, 0, 0, 0, 0);
 		
 		canvas.drawColor(Color.BLACK);
-		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
-				DownhillDive.getInstance().getHeight() >> 1, 20,
-				DownhillDive.getInstance().getHeight(), 1, 0f);
+//		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
+//				DownhillDive.getInstance().getHeight() >> 1, 20,
+//				DownhillDive.getInstance().getHeight(), 1, 0f);
 
 		canvas.drawBitmap(m_bmpAv[DownhillDive.getInstance().getAvatar()
 				.getLeanCurrent().ordinal()], new Rect(0, 0, 64, 64),
