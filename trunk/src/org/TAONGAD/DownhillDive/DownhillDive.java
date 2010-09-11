@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,6 +75,15 @@ public class DownhillDive extends Activity {
 		m_height = display.getHeight();
 		
 		m_avatar = new Avatar(this, (SensorManager)getSystemService(Context.SENSOR_SERVICE));
+		
+		MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.music);
+		mp.setLooping(true);
+		try {
+			mp.start();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
 		
 		m_loop = new GameLoop();
 		m_loop.start(m_renderView.getHolder());
