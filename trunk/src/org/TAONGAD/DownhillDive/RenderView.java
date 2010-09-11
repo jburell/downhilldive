@@ -24,6 +24,7 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.os.Handler.Callback;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -44,6 +45,7 @@ public class RenderView extends View {
 	private Paint mLinePaint;
 
 	Bitmap m_groundTex;
+	Bitmap m_bmpAv[];
 
 	public RenderView(Context context/* , AttributeSet attrs */) {
 		super(context/* , attrs */);
@@ -67,6 +69,31 @@ public class RenderView extends View {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		m_bmpAv = new Bitmap[Avatar.Leaning.values().length];
+		try {
+			m_bmpAv[Avatar.Leaning.NONE.ordinal()] = BitmapFactory.decodeStream(DownhillDive.getInstance()
+					.getAssets().open(DownhillDive.getInstance().getAvatar().getLeanPic(Avatar.Leaning.NONE)));
+		} catch (IOException e) {
+			Log.e("RENDERER", "LOADING " + DownhillDive.getInstance().getAvatar().getLeanPic(Avatar.Leaning.NONE) + " failed!");
+			e.printStackTrace();
+		}
+		
+		try {
+			m_bmpAv[Avatar.Leaning.ALOT.ordinal()] = BitmapFactory.decodeStream(DownhillDive.getInstance()
+					.getAssets().open(DownhillDive.getInstance().getAvatar().getLeanPic(Avatar.Leaning.ALOT)));
+		} catch (IOException e) {
+			Log.e("RENDERER", "LOADING " + DownhillDive.getInstance().getAvatar().getLeanPic(Avatar.Leaning.ALOT) + " failed!");
+			e.printStackTrace();
+		}
+		
+		try {
+			m_bmpAv[Avatar.Leaning.SLIGHTLY.ordinal()] = BitmapFactory.decodeStream(DownhillDive.getInstance()
+					.getAssets().open(DownhillDive.getInstance().getAvatar().getLeanPic(Avatar.Leaning.SLIGHTLY)));
+		} catch (IOException e) {
+			Log.e("RENDERER", "LOADING " + DownhillDive.getInstance().getAvatar().getLeanPic(Avatar.Leaning.SLIGHTLY) + " failed!");
+			e.printStackTrace();
+		}
 	}
 
 	// -----------------------------------------
@@ -74,7 +101,9 @@ public class RenderView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
+		
+		DownhillDive.getInstance().getAvatar().Update();
+		
 //		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
 //				DownhillDive.getInstance().getHeight() >> 1, 20,
 //				DownhillDive.getInstance().getHeight(), 1, 0, 0, 0, 0);
@@ -82,6 +111,9 @@ public class RenderView extends View {
 		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
 				DownhillDive.getInstance().getHeight() >> 1, 20,
 				DownhillDive.getInstance().getHeight(), 1, 0f);
+	
+	
+		canvas.drawBitmap(m_bmpAv[DownhillDive.getInstance().getAvatar().getLeanCurrent().ordinal()], new Rect(0,0,128,128), new Rect(10,10,128,128), new Paint());
 	}
 
 //	@Override

@@ -1,11 +1,13 @@
 package org.TAONGAD.DownhillDive;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,8 +15,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable.Orientation;
+import android.hardware.SensorManager;
 import android.opengl.GLUtils;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Window;
@@ -32,6 +36,7 @@ public class DownhillDive extends Activity {
 	boolean m_isLoading = true;
 	boolean m_isTextureLoaded = false;
 	Texture m_ground;
+	Avatar m_avatar;
 	
 	ByteBuffer m_backBuffer;
 	Bitmap m_backBitmap;
@@ -43,6 +48,10 @@ public class DownhillDive extends Activity {
 
 	int getHeight() {
 		return m_height;
+	}
+	
+	Avatar getAvatar () {
+		return m_avatar;
 	}
 
 	boolean isLoading() {
@@ -91,10 +100,14 @@ public class DownhillDive extends Activity {
 		m_height = display.getHeight();
 		//m_backBuffer = ByteBuffer.allocateDirect(w * h);
 		
-//		m_ground = new Texture(m_backBuffer, w, h, false);
-//		atlas.insert(m_ground);
-
-//		TextureManager.load(atlas);
+		int w = 320;
+		int h = 200;
+		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(w * h);
+		
+		m_avatar = new Avatar(this, (SensorManager)getSystemService(Context.SENSOR_SERVICE));
+		
+	
+	
 	}
 
 	public void doLoading(GL10 gl) {
@@ -143,6 +156,7 @@ public class DownhillDive extends Activity {
 	
 	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
 			float z1, float y2, float z2, float x) {
+
 		float zpos = 1.0f / z2;
 		z1 = 1.0f / z1;
 		final int sideMargin = 40;
