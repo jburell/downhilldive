@@ -81,28 +81,29 @@ public class RenderView extends View {
 		
 		DownhillDive.getInstance().drawGround(canvas, m_groundTex,
 				DownhillDive.getInstance().getHeight() >> 1, 20,
-				DownhillDive.getInstance().getHeight(), 1, 0);
+				DownhillDive.getInstance().getHeight(), 1, 0f);
 	}
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// Keep the view squared
-		int w = MeasureSpec.getSize(widthMeasureSpec);
-		int h = MeasureSpec.getSize(heightMeasureSpec);
-		int d = w == 0 ? h : h == 0 ? w : w < h ? w : h;
-		setMeasuredDimension(d, d);
-	}
+//	@Override
+//	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//		super(widthMeasureSpec, heightMeasureSpec);
+//		// Keep the view squared
+////		int w = MeasureSpec.getSize(widthMeasureSpec);
+////		int h = MeasureSpec.getSize(heightMeasureSpec);
+////		int d = w == 0 ? h : h == 0 ? w : w < h ? w : h;
+////		setMeasuredDimension(d, d);
+//	}
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 
-		int sx = (w - 2 * MARGIN) / 3;
-		int sy = (h - 2 * MARGIN) / 3;
-
-		int size = sx < sy ? sx : sy;
-
-		mDstRect.set(MARGIN, MARGIN, size - MARGIN, size - MARGIN);
+//		int sx = (w - 2 * MARGIN) / 3;
+//		int sy = (h - 2 * MARGIN) / 3;
+//
+//		int size = sx < sy ? sx : sy;
+//
+//		mDstRect.set(MARGIN, MARGIN, size - MARGIN, size - MARGIN);
 	}
 
 	@Override

@@ -142,9 +142,37 @@ public class DownhillDive extends Activity {
 	}
 	
 	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
-			float z1, int y2, float z2, float x) {
+			float z1, float y2, float z2, float x) {
 		float zpos = 1.0f / z2;
 		z1 = 1.0f / z1;
+		final int sideMargin = 40;
+		
+		
+		/* sample 16 times for each scanline */
+//		y1 <<= 4;
+//		y2 <<= 4;
+
+		int bottomY = (int)y2;
+		int topY = y1;
+		float zadd = (z1 - zpos) / (float) (y2 - y1);
+		while (bottomY > topY) {
+			float z = 1.0f / zpos;
+			float centx = (float) (x);
+			
+			Paint mLinePaint = new Paint();
+
+			mLinePaint.setColor(0xFFFFFFFF);
+			mLinePaint.setStrokeWidth(1);
+			mLinePaint.setStyle(Style.STROKE);
+
+			canvas.drawLine(((m_height - y2) + x) + sideMargin /** (zpos) */
+			, bottomY, ((m_width) - (m_height - y2)) - sideMargin /** zpos */
+			, bottomY, mLinePaint);
+
+			zpos += zadd;
+			y2 -= 1.15;
+			bottomY--;
+		}
 	}
 
 	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
