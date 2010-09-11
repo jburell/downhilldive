@@ -33,14 +33,7 @@ public class DownhillDive extends Activity {
 
 	int m_width;
 	int m_height;
-	boolean m_isLoading = true;
-	boolean m_isTextureLoaded = false;
-	Texture m_ground;
 	Avatar m_avatar;
-	
-	ByteBuffer m_backBuffer;
-	Bitmap m_backBitmap;
-	int[] m_texIdx;
 
 	int getWidth() {
 		return m_width;
@@ -54,29 +47,12 @@ public class DownhillDive extends Activity {
 		return m_avatar;
 	}
 
-	boolean isLoading() {
-		return m_isLoading;
-	}
-
-	boolean isLandscape() {
-		return true;
-	}
-
-	Texture getGround() {
-		return m_ground;
-	}
-
-	String getLoadingImage() {
-		return "loading.png";
-	}
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		m_instance = this;
-		m_isLoading = true;
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -85,73 +61,16 @@ public class DownhillDive extends Activity {
 
 		init();
 
-		//RenderView renderView = new RenderView(getApplicationContext());
 		RenderView renderView = new RenderView(getApplicationContext());
-		//GameRenderer renderer = new GameRenderer();
 		setContentView(renderView);
 	}
 
 	public void init() {
-		//TextureManager.prepare();
-//		TextureAtlas atlas = new TextureAtlas(1024, 1024);
-
 		Display display = getWindowManager().getDefaultDisplay(); 
 		m_width = display.getWidth();
 		m_height = display.getHeight();
-		//m_backBuffer = ByteBuffer.allocateDirect(w * h);
-		
-		int w = 320;
-		int h = 200;
-		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(w * h);
 		
 		m_avatar = new Avatar(this, (SensorManager)getSystemService(Context.SENSOR_SERVICE));
-		
-	
-	
-	}
-
-	public void doLoading(GL10 gl) {
-		m_isLoading = true;
-
-		TextureManager.loadTextures(gl);
-
-		// Wait for load to complete
-		while (m_isTextureLoaded == false) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		m_isLoading = false;
-	}
-
-	public void textureLoadComplete() {
-		m_isTextureLoaded = true;
-	}
-
-	void drawFrame(GL10 gl){
-		Canvas canvas = new Canvas(gl);
-		Paint mLinePaint = new Paint();
-        mLinePaint.setColor(0xFFFFFFFF);
-        mLinePaint.setStrokeWidth(5);
-        mLinePaint.setStyle(Style.STROKE);
-		canvas.drawLine(0, 0, 20, 10, mLinePaint);
-		
-		// Insert magic here
-//		gl.glClearColor(1f, 0, 0, 1f);
-//		gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
-		
-//		m_backBitmap.setPixel(20, 10, 0x00ff00);
-//		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, m_backBitmap, 0);
-//		gl.glBindTexture(GL10.GL_TEXTURE_2D, m_texIdx[0]);
-//		GL11 g = (GL11)gl;
-		
-		
-//		Bitmap bitmap = BitmapFactory.decodeByteArray(data, offset, length)
-//		GLUtils.texImage2D()
-//		drawGround(gl, t, tex, y1, z1, y2, z2, x, xmul, ymul, texoff)
 	}
 	
 	void drawGround(Canvas canvas, Bitmap groundTex, int y1,
