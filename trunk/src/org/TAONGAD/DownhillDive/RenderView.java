@@ -60,15 +60,6 @@ public class RenderView extends View {
 		mWinPaint.setColor(0xFFFF0000);
 		mWinPaint.setStrokeWidth(10);
 		mWinPaint.setStyle(Style.STROKE);
-
-		try {
-			m_groundTex = BitmapFactory.decodeStream(DownhillDive.getInstance()
-					.getAssets().open(
-							DownhillDive.getInstance().getLoadingImage()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		m_bmpAv = new Bitmap[Avatar.Leaning.values().length];
 		try {
