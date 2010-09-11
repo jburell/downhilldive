@@ -18,16 +18,15 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.Build;
 import android.util.Log;
 
-public class GameRenderer implements Renderer{
+public class GameRenderer implements Renderer {
 
 	public static ByteBuffer backgroundVertex;
 	public static ByteBuffer vertexBuffer;
 
-	public void onSurfaceCreated(GL10 gl, EGLConfig config){
-		gl.glViewport(0,
-			0,
-			DownhillDive.getInstance().getWidth(),
-			DownhillDive.getInstance().getHeight());
+	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+		gl.glViewport(0, 0, DownhillDive.getInstance().getWidth(), DownhillDive
+				.getInstance().getHeight());
+
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glShadeModel(GL10.GL_FLAT);
@@ -38,16 +37,14 @@ public class GameRenderer implements Renderer{
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		gl.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-		GLU.gluOrtho2D(gl,
-			0,
-			DownhillDive.getInstance().getWidth(),
-			DownhillDive.getInstance().getHeight(),
-			0);
 
-		if(DownhillDive.getInstance().isLandscape()){
-			if(Build.VERSION.SDK_INT == 3){
+		GLU.gluOrtho2D(gl, 0, DownhillDive.getInstance().getWidth(),
+				DownhillDive.getInstance().getHeight(), 0);
+
+		if (DownhillDive.getInstance().isLandscape()) {
+			if (Build.VERSION.SDK_INT == 3) {
 				backgroundVertex = ByteBuffer.allocate(8 * 4);
-			}else{
+			} else {
 				backgroundVertex = ByteBuffer.allocateDirect(8 * 4);
 			}
 
@@ -62,10 +59,10 @@ public class GameRenderer implements Renderer{
 			backgroundVertex.putInt(DownhillDive.getInstance().getWidth());
 			backgroundVertex.putInt(DownhillDive.getInstance().getHeight());
 			backgroundVertex.position(0);
-		}else{
-			if(Build.VERSION.SDK_INT == 3){
+		} else {
+			if (Build.VERSION.SDK_INT == 3) {
 				backgroundVertex = ByteBuffer.allocate(8 * 4);
-			}else{
+			} else {
 				backgroundVertex = ByteBuffer.allocateDirect(8 * 4);
 			}
 			backgroundVertex.order(ByteOrder.nativeOrder());
@@ -81,9 +78,9 @@ public class GameRenderer implements Renderer{
 			backgroundVertex.position(0);
 		}
 
-		if(Build.VERSION.SDK_INT == 3){
+		if (Build.VERSION.SDK_INT == 3) {
 			backgroundVertex = ByteBuffer.allocate(8 * 4);
-		}else{
+		} else {
 			vertexBuffer = ByteBuffer.allocateDirect(8 * 4);
 		}
 
@@ -100,7 +97,7 @@ public class GameRenderer implements Renderer{
 		vertexBuffer.position(0);
 	}
 
-	public void onSurfaceChanged(GL10 gl, int width, int height){
+	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		gl.glViewport(0, 0, width, height);
 		gl.glMatrixMode(GL10.GL_PROJECTION);
 		gl.glLoadIdentity();
@@ -108,47 +105,47 @@ public class GameRenderer implements Renderer{
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glShadeModel(GL10.GL_FLAT);
 		gl.glEnable(GL10.GL_TEXTURE_2D);
-		GLU.gluOrtho2D(gl,
-			0,
-			DownhillDive.getInstance().getWidth(),
-			DownhillDive.getInstance().getHeight(),
-			0);
+		GLU.gluOrtho2D(gl, 0, DownhillDive.getInstance().getWidth(),
+				DownhillDive.getInstance().getHeight(), 0);
 		gl.glVertexPointer(2, GL11.GL_FLOAT, 0, vertexBuffer);
 	}
 
 	private boolean _hasLoaded = false;
-	public void onDrawFrame(final GL10 gl){
-		if(DownhillDive.getInstance().isLoading()){
-			if(_hasLoaded){
+
+	public void onDrawFrame(final GL10 gl) {
+		if (DownhillDive.getInstance().isLoading()) {
+			if (_hasLoaded) {
 				gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 				gl.glMatrixMode(GL10.GL_MODELVIEW);
-
 				gl.glLoadIdentity();
-				gl.glScalef(DownhillDive.getInstance().getWidth(),
-					DownhillDive.getInstance().getHeight(),
-					0);
+				gl.glScalef(DownhillDive.getInstance().getWidth(), DownhillDive
+						.getInstance().getHeight(), 0);
 				gl.glColor4f(1, 1, 1, 1);
 				gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 				return;
 			}
 			Bitmap tbmp = null;
-			try{
-				tbmp = BitmapFactory.decodeStream(DownhillDive.getInstance().getAssets().open(DownhillDive.getInstance().getLoadingImage()));
-			}catch(IOException e){
+			try {
+				tbmp = BitmapFactory.decodeStream(DownhillDive.getInstance()
+						.getAssets().open(
+								DownhillDive.getInstance().getLoadingImage()));
+			} catch (IOException e) {
 				Log.e("RENDERER", "LOADING SCREEN not found");
 				e.printStackTrace();
 			}
 			Bitmap bmp = null;
 			float realWidth, realHeight;
-			if(tbmp == null){
+			if (tbmp == null) {
 				Log.e("RENDERER", "LOADING SCREEN Error!");
 				System.exit(0);
 				return;
-			}else{
-				if(tbmp.getWidth() > 512 || tbmp.getHeight() > 512){
-					bmp = Bitmap.createBitmap(1024, 1024, Bitmap.Config.ARGB_8888);
-				}else{
-					bmp = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
+			} else {
+				if (tbmp.getWidth() > 512 || tbmp.getHeight() > 512) {
+					bmp = Bitmap.createBitmap(1024, 1024,
+							Bitmap.Config.ARGB_8888);
+				} else {
+					bmp = Bitmap
+							.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
 				}
 
 				realWidth = tbmp.getWidth();
@@ -161,30 +158,25 @@ public class GameRenderer implements Renderer{
 			gl.glGenTextures(1, tmp_tex, 0);
 			int tex = tmp_tex[0];
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, tex);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D,
-				GL10.GL_TEXTURE_MIN_FILTER,
-				GL10.GL_NEAREST);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D,
-				GL10.GL_TEXTURE_MAG_FILTER,
-				GL10.GL_NEAREST);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D,
-				GL10.GL_TEXTURE_WRAP_S,
-				GL10.GL_CLAMP_TO_EDGE);
-			gl.glTexParameterf(GL10.GL_TEXTURE_2D,
-				GL10.GL_TEXTURE_WRAP_T,
-				GL10.GL_CLAMP_TO_EDGE);
-			gl.glTexEnvf(GL10.GL_TEXTURE_ENV,
-				GL10.GL_TEXTURE_ENV_MODE,
-				GL10.GL_MODULATE);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
+					GL10.GL_NEAREST);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
+					GL10.GL_NEAREST);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S,
+					GL10.GL_CLAMP_TO_EDGE);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T,
+					GL10.GL_CLAMP_TO_EDGE);
+			gl.glTexEnvf(GL10.GL_TEXTURE_ENV, GL10.GL_TEXTURE_ENV_MODE,
+					GL10.GL_MODULATE);
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bmp, 0);
 
 			gl.glClearColor(0.6f, 0.6f, 1, 1);
 			gl.glVertexPointer(2, GL11.GL_FLOAT, 0, vertexBuffer);
 
 			ByteBuffer texBuffer;
-			if(Build.VERSION.SDK_INT == 3){
+			if (Build.VERSION.SDK_INT == 3) {
 				texBuffer = ByteBuffer.allocate(8 * 4);
-			}else{
+			} else {
 				texBuffer = ByteBuffer.allocateDirect(8 * 4);
 			}
 
@@ -198,14 +190,14 @@ public class GameRenderer implements Renderer{
 			float height = bmp.getHeight();
 			float width = bmp.getWidth();
 
-			if(DownhillDive.getInstance().isLandscape()){
+			if (DownhillDive.getInstance().isLandscape()) {
 				texBuffer.putFloat(realWidth / width);
 				texBuffer.putFloat(0);
 				texBuffer.putFloat(0);
 				texBuffer.putFloat(realHeight / height);
 				texBuffer.putFloat(realWidth / width);
 				texBuffer.putFloat(realHeight / height);
-			}else{
+			} else {
 				texBuffer.putFloat(realHeight / height);
 				texBuffer.putFloat(0);
 				texBuffer.putFloat(0);
@@ -222,22 +214,21 @@ public class GameRenderer implements Renderer{
 			gl.glMatrixMode(GL10.GL_MODELVIEW);
 
 			gl.glLoadIdentity();
-			gl.glScalef(DownhillDive.getInstance().getWidth(),
-				DownhillDive.getInstance().getHeight(),
-				0);
+			gl.glScalef(DownhillDive.getInstance().getWidth(), DownhillDive
+					.getInstance().getHeight(), 0);
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
 
-			new Thread(new Runnable(){
-				public void run(){
-					((DownhillDive)DownhillDive.getInstance()).doLoading(gl);
+			new Thread(new Runnable() {
+				public void run() {
+					((DownhillDive) DownhillDive.getInstance()).doLoading(gl);
 				}
 			}).start();
 			_hasLoaded = true;
 			bmp.recycle();
 			bmp = null;
 			System.gc();
-		}else{
+		} else {
 			TextureManager.updateTextures(gl);
 			gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			gl.glMatrixMode(GL10.GL_MODELVIEW);

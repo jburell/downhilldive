@@ -1,5 +1,7 @@
 package org.TAONGAD.DownhillDive;
 
+import java.nio.ByteBuffer;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
@@ -20,6 +22,7 @@ public class DownhillDive extends Activity{
 	int m_height;
 	boolean m_isLoading = true;
 	boolean m_isTextureLoaded = false;
+	Texture m_ground;
 	
 	int getWidth(){
 		return m_width;
@@ -35,6 +38,10 @@ public class DownhillDive extends Activity{
 	
 	boolean isLandscape(){
 		return true;
+	}
+	
+	Texture getGround(){
+		return m_ground;
 	}
 	
 	String getLoadingImage(){
@@ -66,6 +73,15 @@ public class DownhillDive extends Activity{
 	
 	public void init(){
 		TextureManager.prepare();
+		TextureAtlas atlas = new TextureAtlas(1024, 1024);
+		
+		int w = 320;
+		int h = 200;
+		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(w * h);
+		m_ground = new Texture(byteBuffer, w, h, false);
+		atlas.insert(m_ground);
+		
+		TextureManager.load(atlas);
 	}
 	
 	public void doLoading(GL10 gl){
@@ -126,7 +142,11 @@ public class DownhillDive extends Activity{
 
 				if((topy >> 4) < (BottomY >> 4)) /* question is: are we at least one pixel line above what was last drawn ? */
 				{
-					//stretch_blit(tex, t, 0, (int)((z+texoff)*4.0f)&(tex.getHeight() - 1), tex.getWidth(), 1, (m_width >> 1) + (m_width >> 1)*(centx-1.0f)*zpos, (topy) >> 4, (m_width >> 1)*(2.0f)*zpos, (BottomY >> 4) -(topy >> 4));
+//					stretch_blit(tex, t, 
+//							0, (int)((z+texoff)*4.0f)&(tex.getHeight() - 1),
+//							tex.getWidth(), 1,
+//							(m_width >> 1) + (m_width >> 1)*(centx-1.0f)*zpos, (topy) >> 4,
+//							(m_width >> 1) * (2.0f)*zpos, (BottomY >> 4) - (topy >> 4));
 					BottomY = topy;
 				}
 
